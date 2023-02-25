@@ -3,19 +3,21 @@ import { Container } from "../../../../reusecore/Layout";
 import VisualizerFeaturesWrapper from "./VisualizerFeatures.style";
 import VisualizerFeaturesDiagram from "./VisualizerFeatures_diagram";
 import Feature from "../../features";
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 
+import { useInView } from "react-intersection-observer";
 
 export default function VisualizerFeatures({ features, theme }) {
   const [activeExampleIndex, setActiveExampleIndex] = useState(0);
   const [viewportStatus, setViewportStatus] = useState(
     new Array(features.length).fill(false)
   );
+  const [ref, inView] = useInView({ threshold: 0.95 });
 
   return (
-    <VisualizerFeaturesWrapper>
+    <VisualizerFeaturesWrapper className="feature">
       <Container className="visualizer-container">
-        <div className="root">
+        <div ref={ref} className="root">
           <div id="featureHeading" className="fixed">
             <h1>Visualize</h1>
           </div>
@@ -23,7 +25,7 @@ export default function VisualizerFeatures({ features, theme }) {
             <div className="diagram scroll">
               <VisualizerFeaturesDiagram activeExampleIndex={activeExampleIndex} theme={theme} />
             </div>
-            <ul className="features">
+            <ul className="features" style={{ overflowY: inView ? "visible" : "hidden" }}>
               {features.map((feature, index) => (
                 <li key={index}>
                   <Feature

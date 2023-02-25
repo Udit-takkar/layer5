@@ -3,20 +3,20 @@ import { Container } from "../../../../reusecore/Layout";
 import DesignerFeaturesWrapper from "./DesignerFeatures.style";
 import DesignerFeaturesDiagram from "./DesignerFeatures_diagram";
 import Feature from "../../features";
-// import { useInView } from "react-intersection-observer";
-import { useRef, useState, useEffect } from "react";
-// import useScrollBlock from "../useScrollBlock";
+import { useInView } from "react-intersection-observer";
+import { useState } from "react";
 
 export default function DesignerFeatures({ features, theme }) {
   const [activeExampleIndex, setActiveExampleIndex] = useState(0);
   const [viewportStatus, setViewportStatus] = useState(
     new Array(features.length).fill(false)
   );
+  const [ref, inView] = useInView({ threshold: 0.95 });
 
   return (
-    <DesignerFeaturesWrapper>
+    <DesignerFeaturesWrapper className="feature">
       <Container className="designer-container">
-        <div className="root">
+        <div ref={ref} className="root">
           <div id="featureHeading" className="fixed" >
             <h1>Design</h1>
           </div>
@@ -24,7 +24,7 @@ export default function DesignerFeatures({ features, theme }) {
             <div className="diagram scroll">
               <DesignerFeaturesDiagram activeExampleIndex={activeExampleIndex} theme={theme} />
             </div>
-            <ul className="features">
+            <ul className="features" style={{ overflowY: inView ? "visible" : "hidden" }}>
               {features.map((feature, index) => (
                 <li key={index}>
                   <Feature

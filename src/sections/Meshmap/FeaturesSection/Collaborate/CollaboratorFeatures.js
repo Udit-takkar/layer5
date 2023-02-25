@@ -3,18 +3,20 @@ import { Container } from "../../../../reusecore/Layout";
 import CollaboratorFeaturesWrapper from "./CollaboratorFeatures.style";
 import CollaboratorFeaturesDiagram from "./CollaboratorFeatures_diagram";
 import Feature from "../../features";
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 export default function CollaboratorFeatures({ features, theme }) {
   const [activeExampleIndex, setActiveExampleIndex] = useState(0);
   const [viewportStatus, setViewportStatus] = useState(
     new Array(features.length).fill(false)
   );
+  const [ref, inView] = useInView({ threshold: 0.95 });
 
   return (
-    <CollaboratorFeaturesWrapper>
+    <CollaboratorFeaturesWrapper className="feature">
       <Container className="collaborate-container">
-        <div className="root">
+        <div ref={ref} className="root">
           <div id="featureHeading" className="fixed">
             <h1>Collaborate</h1>
           </div>
@@ -22,7 +24,7 @@ export default function CollaboratorFeatures({ features, theme }) {
             <div className="diagram scroll">
               <CollaboratorFeaturesDiagram activeExampleIndex={activeExampleIndex} theme={theme} />
             </div>
-            <ul className="features">
+            <ul className="features" style={{ overflowY: inView ? "visible" : "hidden" }}>
               {features.map((feature, index) => (
                 <li key={index}>
                   <Feature

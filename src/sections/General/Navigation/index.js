@@ -273,7 +273,7 @@ const Navigation = ({ theme, themeSetter }) => {
                   <div>
                     <ul>
                       <li>
-                        <Button id="get-started" secondary className="banner-btn two" title="Get Started" url="https://meshery.layer5.io/registration" />
+                        <Button id="get-started" secondary className="banner-btn two" title="Get Started" external={true} url="https://meshery.layer5.io/registration" />
                       </li>
                     </ul>
                   </div>
